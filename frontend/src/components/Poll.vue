@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import Option from "@/components/Poll/Option";
+// components
+import Option from "@/components/Option";
 import Preloader from "@/components/Preloader";
-import notifications from "@/mixins/notifications";
+import notices from "@/mixins/notices";
 
 export default {
   name: "Poll",
@@ -33,11 +34,11 @@ export default {
     Preloader
   },
   mixins: [
-      notifications
+    notices
   ],
   data() {
     return {
-      api: "https://d952-2a00-1fa0-c207-3373-9919-d58b-f508-f162.ngrok-free.app",
+      api: "http://127.0.0.1:3301/v1/poll",
       isLoading: false,
       selected: false,
       poll: null,
@@ -45,15 +46,8 @@ export default {
   },
   methods: {
     loadPoll() {
-      const myHeaders = new Headers();
-      myHeaders.append("Ngrok-Skip-Browser-Warning", "123");
-
-      const config = {
-        headers: myHeaders,
-      }
-
       this.isLoading = true
-      fetch(this.api+"/poll/2", config)
+      fetch(this.api+"/1")
         .then(response => {
           if (response.ok) {
             this.isLoading = false
@@ -70,14 +64,7 @@ export default {
         })
     },
     updatePoll() {
-      const myHeaders = new Headers();
-      myHeaders.append("Ngrok-Skip-Browser-Warning", "123");
-
-      const config = {
-        headers: myHeaders,
-      }
-
-      fetch(this.api+"/poll/2", config)
+      fetch(this.api+"/1")
           .then(response => {
             if (response.ok) {
               return response.json()
@@ -96,18 +83,14 @@ export default {
       this.selected = true
     },
     vote(id) {
-      const myHeaders = new Headers();
-      myHeaders.append("Ngrok-Skip-Browser-Warning", "123");
-
       const config = {
         method: "POST",
-        headers: myHeaders,
       }
 
-      fetch(this.api+"/poll/vote/"+id, config)
+      fetch(this.api+"/option/vote/"+id, config)
           .then(response => {
             if (response.ok) {
-              this.success("Vote sent")
+              this.success("You have successfully voted")
             } else {
               this.danger("Error while loading poll")
             }
@@ -161,6 +144,7 @@ export default {
 
   &__name {
     margin-bottom: 15px;
+    font-weight: 600;
   }
 
   &__options {

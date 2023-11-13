@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Chart from "@/components/Poll/Chart";
+import Chart from "@/components/Chart";
 
 export default {
   name: "PollOption",
