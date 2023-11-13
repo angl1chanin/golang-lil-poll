@@ -1,0 +1,7 @@
+app: "poll"
+env: "local"
+storage_path: "./storage.db"
+http_server:
+  address: "127.0.0.1:3301"
+  timeout: 4s
+  idle_timeout: 60s
