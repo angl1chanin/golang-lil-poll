@@ -55,7 +55,7 @@ func (uc *useCase) CreatePoll(name string, pollID int, options []*entity.Option)
 }
 
 func (uc *useCase) VoteForOption(optionID int) error {
-	return nil
+	return uc.optionService.Vote(optionID)
 }
 
 func (uc *useCase) DeletePoll(id int) error {

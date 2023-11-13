@@ -32,5 +32,18 @@ func (h *Handler) GetPoll(ctx *gin.Context) {
 }
 
 func (h *Handler) VoteForPoll(ctx *gin.Context) {
+	id := ctx.Param("id")
+	intID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		ctx.JSON(500, gin.H{"status": "error"})
+		return
+	}
 
+	err = h.uc.VoteForOption(int(intID))
+	if err != nil {
+		ctx.JSON(500, gin.H{"status": "error"})
+		return
+	}
+
+	ctx.JSON(200, gin.H{"status": "ok"})
 }

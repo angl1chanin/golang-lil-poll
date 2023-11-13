@@ -27,7 +27,7 @@ func (s *optionService) Create(pollID int, options []entity.Option) error {
 }
 
 func (s *optionService) Vote(optionID int) error {
-	return nil
+	return s.r.Vote(optionID)
 }
 
 func (s *optionService) GetOptionsByPollId(pollId uint) ([]*entity.Option, error) {
