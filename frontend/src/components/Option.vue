@@ -15,42 +15,32 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Chart from "@/components/Chart";
+import {computed} from "vue";
 
-export default {
-  name: "PollOption",
-  components: {
-    Chart,
+const props = defineProps({
+  option: {
+    type: Object,
+    required: true,
   },
-  data() {
-    return {
-    }
+  selected: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    option: {
-      type: Object,
-      required: true,
-    },
-    selected: {
-      type: Boolean,
-      required: true,
-    },
-    totalVotes: {
-      type: Number,
-      required: true,
-    },
+  totalVotes: {
+    type: Number,
+    required: true,
   },
-  computed: {
-    percentage() {
-      if (this.totalVotes > 0) {
-        return Math.floor((this.option.votes/this.totalVotes)*100)
-      } else {
-        return 0
-      }
-    }
+})
+
+const percentage = computed(() => {
+  if (props.totalVotes > 0) {
+    return Math.floor((props.option.votes/props.totalVotes)*100)
+  } else {
+    return 0
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -10,25 +10,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Chart",
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    percentage: {
-      type: Number,
-      required: true,
-    }
+<script setup>
+import {computed} from "vue";
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
   },
-  computed: {
-    percentageWidth() {
-      return `width: ${this.percentage}%`
-    }
+  percentage: {
+    type: Number,
+    required: true,
   }
-}
+})
+
+const percentageWidth = computed(() => {
+  return `width: ${props.percentage}%`
+})
 </script>
 
 <style lang="scss" scoped>
@@ -58,7 +56,6 @@ export default {
       bottom: 0;
       left: 0;
       background-color: #1FCC92;
-      //width: 20%;
     }
   }
 }

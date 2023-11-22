@@ -9,20 +9,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // styles
 import "mosha-vue-toastify/dist/style.css";
 import "@/assets/style/reset.css";
 
 // components
 import Poll from "@/components/Poll";
-
-export default {
-  name: 'App',
-  components: {
-    Poll,
-  }
-}
 </script>
 
 <style lang="scss">

@@ -21,91 +21,87 @@
   </div>
 </template>
 
-<script>
+<script setup>
+// composition api functions
+import {onMounted, ref} from "vue";
+
+// mixins
+import notices from "@/mixins/notices";
+
 // components
 import Option from "@/components/Option";
 import Preloader from "@/components/Preloader";
-import notices from "@/mixins/notices";
 
-export default {
-  name: "Poll",
-  components: {
-    Option,
-    Preloader
-  },
-  mixins: [
-    notices
-  ],
-  data() {
-    return {
-      api: "http://127.0.0.1:3301/v1/poll",
-      isLoading: false,
-      selected: false,
-      poll: null,
-    }
-  },
-  methods: {
-    loadPoll() {
-      this.isLoading = true
-      fetch(this.api+"/1")
-        .then(response => {
-          if (response.ok) {
-            this.isLoading = false
-            return response.json()
-          } else {
-            this.danger("Error while loading poll")
-          }
-        })
-        .then(json => {
-          this.poll = json
-        })
-        .catch(error => {
-          console.log("Poll server isn't available")
-        })
-    },
-    updatePoll() {
-      fetch(this.api+"/1")
-          .then(response => {
-            if (response.ok) {
-              return response.json()
-            } else {
-              this.danger("Error while loading poll")
-            }
-          })
-          .then(json => {
-            this.poll = json
-          })
-          .catch(error => {
-            console.log("Poll server isn't available")
-          })
-    },
-    updateSelectState() {
-      this.selected = true
-    },
-    vote(id) {
-      const config = {
-        method: "POST",
-      }
 
-      fetch(this.api+"/option/vote/"+id, config)
-          .then(response => {
-            if (response.ok) {
-              this.success("You have successfully voted")
-            } else {
-              this.danger("Error while loading poll")
-            }
-          })
-          .catch(error => {
-            console.log("Poll not available")
-          })
-      this.updateSelectState()
-      this.updatePoll()
-    }
-  },
-  mounted() {
-    this.loadPoll()
-  }
+const api = "http://127.0.0.1:3301/v1/poll"
+let isLoading = ref(false)
+let selected = ref(false)
+let poll = ref(null)
+
+const loadPoll = () => {
+  isLoading.value = true
+  fetch(api+"/1")
+      .then(response => {
+        if (response.ok) {
+          isLoading.value = false
+          return response.json()
+        } else {
+          this.danger("Error while loading poll")
+        }
+      })
+      .then(json => {
+        poll.value = json
+      })
+      .catch(_ => {
+        console.log("Poll server isn't available")
+      })
 }
+
+const updatePoll = () => {
+  fetch(api+"/1")
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          this.danger("Error while loading poll")
+        }
+      })
+      .then(json => {
+        poll.value = json
+      })
+      .catch(_ => {
+        console.log("Poll server isn't available")
+      })
+}
+
+const updateSelectState = () => {
+  selected.value = true
+}
+
+const vote = (id) => {
+  const config = {
+    method: "POST",
+  }
+
+  fetch(api+"/option/vote/"+id, config)
+      .then(response => {
+        if (response.ok) {
+          this.success("You have successfully voted")
+        } else {
+          this.danger("Error while loading poll")
+        }
+      })
+      .catch(error => {
+        console.log("Poll not available")
+      })
+  updateSelectState()
+  updatePoll()
+}
+
+onMounted(() => {
+  loadPoll()
+})
+
 </script>
 
 <style lang="scss" scoped>
